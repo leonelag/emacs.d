@@ -51,8 +51,8 @@
 ;;
 ;; scratch buffer
 ;;
-(require 'scratch)
-(global-set-key [f5] 'new-scratch-buffer)
+;(require 'scratch)
+;(global-set-key [f5] 'new-scratch-buffer)
 
 ;;
 ;; http://emacs-fu.blogspot.com/2010/04/navigating-kill-ring.html
@@ -107,19 +107,29 @@
 ;;
 ;; Monkey-patch nrepl.el to show stdout messages on *nrepl* buffer
 ;;
-(require 'nrepl)
-(defun nrepl-interactive-eval-handler (buffer)
-  (nrepl-make-response-handler buffer
-                               ;; (lambda (buffer value)
-                               ;;   (message (format "%s" value)))
-                               (lambda (buffer value)
-                                 (nrepl-emit-interactive-output value))
-                               (lambda (buffer value)
-                                 (nrepl-emit-interactive-output value))
-                               (lambda (buffer err)
-                                 (message (format "%s" err)))
-                               '()))
+;(require 'nrepl)
+;(defun nrepl-interactive-eval-handler (buffer)
+;  (nrepl-make-response-handler buffer
+;                               ;; (lambda (buffer value)
+;                               ;;   (message (format "%s" value)))
+;                               (lambda (buffer value)
+;                                 (nrepl-emit-interactive-output value))
+;                               (lambda (buffer value)
+;                                 (nrepl-emit-interactive-output value))
+;                               (lambda (buffer err)
+;                                 (message (format "%s" err)))
+;                               '()))
 
+;;
+;; http://emacs-fu.blogspot.com/2011/09/quick-note-taking-with-deft-and-org.html
+;;
+(require 'deft)
+(when (require 'deft nil 'noerror) 
+   (setq
+      deft-extension "org"
+      deft-directory "~/Documents/deft/"
+      deft-text-mode 'org-mode)
+   (global-set-key (kbd "<f8>") 'deft))
 
 ;;
 ;; http://stackoverflow.com/questions/885793/emacs-error-when-calling-server-start/1566618#1566618
@@ -131,3 +141,15 @@
                                                  ; on windows.
 (server-start)
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages (quote (deft ido-ubiquitous magit))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

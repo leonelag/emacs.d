@@ -1,3 +1,7 @@
+;; -*- coding: utf-8-dos -*- 
+
+(add-to-list 'load-path "~/.emacs.d/lisp")
+
 (require 'package)
 (add-to-list 'package-archives
              '("melpa" . "http://melpa.org/packages/"))
@@ -43,6 +47,11 @@
 (ido-ubiquitous-mode)
 
 ;;
+;; UTF-8
+;;
+(prefer-coding-system 'utf-8-unix)
+
+;;
 ;; ibuffer
 ;;
 (require 'ibuffer)
@@ -51,8 +60,8 @@
 ;;
 ;; scratch buffer
 ;;
-;(require 'scratch)
-;(global-set-key [f5] 'new-scratch-buffer)
+(require 'scratch)
+(global-set-key [f5] 'new-scratch-buffer)
 
 ;;
 ;; http://emacs-fu.blogspot.com/2010/04/navigating-kill-ring.html
@@ -146,7 +155,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (deft ido-ubiquitous magit))))
+ '(exec-path
+   (quote
+    ("C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32")))
+ '(package-selected-packages (quote (paredit lavender-theme deft ido-ubiquitous magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

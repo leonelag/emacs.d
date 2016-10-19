@@ -22,15 +22,8 @@
 (setq ido-everywhere t)
 (ido-mode 1)
 
-;;
-;; Magit. http://magit.vc/manual/magit/Getting-started.html#Getting-started
-;;
-(global-set-key (kbd "C-x g") 'magit-status)
-
 (tool-bar-mode -1)
 (menu-bar-mode -1)
-
-
 
 ;;
 ;; Magit. http://magit.vc/manual/magit/Getting-started.html#Getting-started

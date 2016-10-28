@@ -172,3 +172,8 @@
                                                  ; on windows.
 (server-start)
 
+;;
+;; Change ENV var PATH to be the same as contents of exec-path.
+;; I use it to make sure java.exe is on the PATH, to run cider.
+;;
+(setenv "PATH" (mapconcat 'identity exec-path ";"))

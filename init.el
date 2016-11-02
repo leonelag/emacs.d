@@ -177,3 +177,47 @@
 ;; I use it to make sure java.exe is on the PATH, to run cider.
 ;;
 (setenv "PATH" (mapconcat 'identity exec-path ";"))
+
+;;
+;; Enable paredit automatically for a few modes.
+;; https://www.emacswiki.org/emacs/ParEdit
+;;
+(autoload 'enable-paredit-mode "paredit" "Turn on pseudo-structural editing of Lisp code." t)
+(add-hook 'emacs-lisp-mode-hook       #'enable-paredit-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+(add-hook 'ielm-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-mode-hook             #'enable-paredit-mode)
+(add-hook 'lisp-interaction-mode-hook #'enable-paredit-mode)
+(add-hook 'scheme-mode-hook           #'enable-paredit-mode)
+(add-hook 'clojure-mode-hook          #'enable-paredit-mode)
+
+
+;;
+;; Some org keywords
+;; https://www.reddit.com/r/emacs/comments/4ipmxe/toodledo_and_org_still_relevant/
+;;
+(setq org-todo-keywords '((sequence
+			   "TODO"
+			   "|"
+			   "DONE"
+			   "|"
+			   "Active(a)"
+			   "Next Action(n)"
+			   "Canceled(c)"
+			   "Hold(h)"
+			   "Reference(r)"
+			   "Delegated(d)"
+			   "Waiting(w)"
+			   "Postponed(P)"
+			   "Someday(s)"
+			   "Planning(p)")))
+
+;;
+;; Insert current date
+;; http://ergoemacs.org/emacs/elisp_datetime.html
+;;
+(defun insert-date ()
+  "Insert current date yyyy-mm-dd."
+  (interactive)
+  (insert (format-time-string "%Y-%m-%d")))
+(global-set-key (kbd "C-c d") 'insert-date)

@@ -4,6 +4,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cider-cljs-lein-repl
+   "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 58864)))")
  '(custom-enabled-themes (quote (tango-dark)))
  '(custom-safe-themes
    (quote
@@ -13,7 +15,7 @@
     ("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
  '(package-selected-packages
    (quote
-    (cider clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
+    (use-package neotree projectile cider clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -37,8 +39,20 @@
 
 (package-initialize)
 
-(global-set-key (kbd "C-;") 'delete-horizontal-space)
-(global-set-key (kbd "C-.") 'join-line)
+;;
+;; http://emacs.stackexchange.com/a/360/11422
+;;
+(defun lag-prev-window ()
+  (interactive)
+  (other-window -1))
+
+(bind-keys*
+ ("C-;" . delete-horizontal-space)
+ ("C-." . join-line)
+ ("C-o" . other-window)
+ ("C-S-o" . lag-prev-window)
+ ("C-c 3" . comment-region)
+ ("C-c 4" . uncomment-region))
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode
@@ -221,3 +235,14 @@
   (interactive)
   (insert (format-time-string "%Y-%m-%d")))
 (global-set-key (kbd "C-c d") 'insert-date)
+
+(defun insert-week-number ()
+  "Inserts a header for current week number."
+  (interactive)
+  (insert (format-time-string "* Week %U")))
+(global-set-key (kbd "C-c u") 'insert-week-number)
+
+;;
+;; Password generator
+;;
+(load-file "~/.emacs.d/lisp/password-generator.el")

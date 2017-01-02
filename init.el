@@ -15,7 +15,7 @@
     ("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
  '(package-selected-packages
    (quote
-    (use-package neotree projectile cider clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
+    (js2-mode use-package neotree projectile cider clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -52,7 +52,8 @@
  ("C-o" . other-window)
  ("C-S-o" . lag-prev-window)
  ("C-c 3" . comment-region)
- ("C-c 4" . uncomment-region))
+ ("C-c 4" . uncomment-region)
+ ("C-k"   . kill-whole-line))
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode

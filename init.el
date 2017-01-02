@@ -46,6 +46,13 @@
   (interactive)
   (other-window -1))
 
+;;
+;; Kill line ending.
+;;
+(defun my-kill-line ()
+  (interactive)
+  (kill-line t))
+
 (bind-keys*
  ("C-;" . delete-horizontal-space)
  ("C-." . join-line)
@@ -53,7 +60,8 @@
  ("C-S-o" . lag-prev-window)
  ("C-c 3" . comment-region)
  ("C-c 4" . uncomment-region)
- ("C-k"   . kill-whole-line))
+ ("C-k"   . kill-line)
+ ("C-S-k" . my-kill-line))
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode

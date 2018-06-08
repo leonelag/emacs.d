@@ -13,9 +13,11 @@
  '(exec-path
    (quote
     ("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
+ '(neo-window-width 50)
+ '(package-archives (quote (("melpa" . "http://stable.melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-    (js2-mode use-package neotree projectile cider clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
+    (treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -27,12 +29,17 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
 (require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/"))
+;; (add-to-list 'package-archives
+;;              '("melpa-stable" . "https://stable.melpa.org/packages/")
+;; ;             '("melpa" . "http://melpa.org/packages/")
+;;              )
 
-(when (< emacs-major-version 24)
-  ;; For important compatibility libraries like cl-lib
-  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/")))
+;(when (< emacs-major-version 24)
+;  ;; For important compatibility libraries like cl-lib
+;  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+;;  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
+;  )
+
 
 ; (set-default-font "-outline-Consolas-normal-normal-normal-mono-18-*-*-*-c-*-iso8859-1")
 (set-default-font "Consolas 11")
@@ -56,12 +63,12 @@
 (bind-keys*
  ("C-;" . delete-horizontal-space)
  ("C-." . join-line)
- ("C-o" . other-window)
- ("C-S-o" . lag-prev-window)
+; ("C-o" . other-window)
+ ("C-S-o" . other-window)
  ("C-c 3" . comment-region)
  ("C-c 4" . uncomment-region)
- ("C-k"   . kill-line)
- ("C-S-k" . my-kill-line))
+ ("C-S-k" . my-kill-line)
+ ("C-x t" . delete-trailing-whitespace))
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode
@@ -76,6 +83,13 @@
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 
 ;;
+;; https://stackoverflow.com/a/1819405/15649
+;;
+(setq-default indent-tabs-mode nil)
+(setq-default tab-width 4)
+(setq indent-line-function 'insert-tab)
+
+;;
 ;; Magit. http://magit.vc/manual/magit/Getting-started.html#Getting-started
 ;;
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -84,12 +98,12 @@
 ;; IDO
 ;; http://emacsist.com/10480
 ;;
-(require 'ido)
-(ido-mode)
-(ido-everywhere)
-(setq ido-use-filename-at-point 'guess)
-(require 'ido-ubiquitous)
-(ido-ubiquitous-mode)
+; (require 'ido)
+; (ido-mode)
+; (ido-everywhere)
+; (setq ido-use-filename-at-point 'guess)
+; (require 'ido-ubiquitous)
+; (ido-ubiquitous-mode)
 
 ;;
 ;; UTF-8
@@ -255,3 +269,15 @@
 ;; Password generator
 ;;
 (load-file "~/.emacs.d/lisp/password-generator.el")
+
+
+;;
+;; Save backup files to ~/.emacs.d/backup
+;; http://stackoverflow.com/a/151946/15649
+;;
+(setq backup-directory-alist `(("." . "~/.emacs.d/backup")))
+
+;;
+;; https://www.emacswiki.org/emacs/WoMan
+;;
+(setq woman-manpath '("c:/cygwin64/usr/share/man/"))

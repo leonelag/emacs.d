@@ -1,34 +1,31 @@
 ;; -*- coding: utf-8-dos -*- 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(cider-cljs-lein-repl
-   "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 58864)))")
- '(custom-enabled-themes (quote (tango-dark)))
- '(custom-safe-themes
-   (quote
-    ("47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default)))
- '(exec-path
-   (quote
-    ("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
- '(neo-window-width 50)
- '(package-archives (quote (("melpa" . "http://stable.melpa.org/packages/"))))
- '(package-selected-packages
-   (quote
-    (treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
-
+;;
+;; Custom code
+;;
 (add-to-list 'load-path "~/.emacs.d/lisp")
 
+
+;;
+;; https://stable.melpa.org/#/getting-started
+;;
 (require 'package)
+(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                    (not (gnutls-available-p))))
+       (proto (if no-ssl "http" "https"))
+       (stable t))
+  ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
+  (add-to-list 'package-archives (cons "melpa"
+                                       (concat proto "://"
+                                               (if stable "stable." "")
+                                               "melpa.org/packages/"))
+               t)
+  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
+  (when (< emacs-major-version 24)
+    ;; For important compatibility libraries like cl-lib
+    (add-to-list 'package-archives '("gnu" . (concat proto "://elpa.gnu.org/packages/")))))
+(package-initialize)
+
 ;; (add-to-list 'package-archives
 ;;              '("melpa-stable" . "https://stable.melpa.org/packages/")
 ;; ;             '("melpa" . "http://melpa.org/packages/")
@@ -38,10 +35,10 @@
 ;  ;; For important compatibility libraries like cl-lib
 ;  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
 ;;  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
-;  )
+                                        ;  )
 
+(add-to-list 'load-path "~/.emacs.d/lisp/monroe")
 
-; (set-default-font "-outline-Consolas-normal-normal-normal-mono-18-*-*-*-c-*-iso8859-1")
 (set-default-font "Consolas 11")
 
 (package-initialize)
@@ -85,9 +82,15 @@
 ;;
 ;; https://stackoverflow.com/a/1819405/15649
 ;;
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
+(setq indent-tabs-mode t)
+(setq tab-width 4)
+; (setq indent-line-function nil)
+;; Python Hook
+(add-hook 'javascript-mode-hook
+          (function (lambda ()
+                      (setq indent-tabs-mode nil
+                            tab-width 2))))
+
 
 ;;
 ;; Magit. http://magit.vc/manual/magit/Getting-started.html#Getting-started
@@ -281,3 +284,53 @@
 ;; https://www.emacswiki.org/emacs/WoMan
 ;;
 (setq woman-manpath '("c:/cygwin64/usr/share/man/"))
+
+;;
+;; https://www.emacswiki.org/emacs/AlarmBell
+;; Turn off annoying alarm bell
+;;
+(setq ring-bell-function 'ignore)
+
+;;
+;; https://www.gnu.org/software/emacs/manual/html_node/efaq/Displaying-the-current-file-name-in-the-titlebar.html#Displaying-the-current-file-name-in-the-titlebar
+;; Display path of current file in title bar.
+;;
+(setq frame-title-format "%f")
+
+(setq lag-variable-width-font-name "Arial")
+
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ `(font-lock-builtin-face ((t (:foreground "#8E69C9" :family ,lag-variable-width-font-name))))
+ `(font-lock-comment-face ((t (:foreground "dim gray" :height 1.1 :width normal :family ,lag-variable-width-font-name))))
+ `(font-lock-keyword-face ((t (:foreground "#8E6DA6" :slant italic :weight ultra-bold :family ,lag-variable-width-font-name)))))
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
+ '(cider-cljs-lein-repl
+   "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 58864)))")
+ '(custom-enabled-themes (quote (lavender)))
+ '(custom-safe-themes
+   (quote
+	("47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default)))
+ '(exec-path
+   (quote
+	("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
+ '(js-indent-level 2)
+ '(neo-window-width 50)
+ '(package-archives (quote (("melpa" . "http://stable.melpa.org/packages/"))))
+ '(package-selected-packages
+   (quote
+	(scala-mode monroe treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit)))
+ '(standard-indent 2)
+ '(tab-width 4))

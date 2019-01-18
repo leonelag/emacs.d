@@ -13,7 +13,7 @@
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
        (proto (if no-ssl "http" "https"))
-       (stable t))
+       (stable nil))
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa"
                                        (concat proto "://"
@@ -39,13 +39,11 @@
 
 (add-to-list 'load-path "~/.emacs.d/lisp/monroe")
 
-(set-default-font "Consolas 11")
+(set-default-font "Consolas 12")
+; (set-default-font "Inconsolata 14")
 
 (package-initialize)
 
-;;
-;; http://emacs.stackexchange.com/a/360/11422
-;;
 (defun lag-prev-window ()
   (interactive)
   (other-window -1))
@@ -57,6 +55,10 @@
   (interactive)
   (kill-line t))
 
+;;
+;; http://emacs.stackexchange.com/a/360/11422
+;; Bind keys but prevent major and minor modes to override settings
+;;
 (bind-keys*
  ("C-;" . delete-horizontal-space)
  ("C-." . join-line)
@@ -65,7 +67,9 @@
  ("C-c 3" . comment-region)
  ("C-c 4" . uncomment-region)
  ("C-S-k" . my-kill-line)
- ("C-x t" . delete-trailing-whitespace))
+ ("C-x t" . delete-trailing-whitespace)
+ ("C-c C-l" . browse-url-at-point)
+ ("C-c C-d" . insert-date))
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode
@@ -84,12 +88,19 @@
 ;;
 (setq indent-tabs-mode t)
 (setq tab-width 4)
-; (setq indent-line-function nil)
+(setq indent-line-function ')
 ;; Python Hook
 (add-hook 'javascript-mode-hook
           (function (lambda ()
                       (setq indent-tabs-mode nil
                             tab-width 2))))
+
+;;
+;; 2019-01-18
+;; The Ultimate Guide To Indentation in Emacs (Tabs and Spaces)
+;; https://dougie.io/emacs/indentation/
+;;
+
 
 
 ;;
@@ -194,13 +205,13 @@
 ;;
 ;; http://emacs-fu.blogspot.com/2011/09/quick-note-taking-with-deft-and-org.html
 ;;
-(require 'deft)
-(when (require 'deft nil 'noerror) 
-   (setq
-      deft-extension "org"
-      deft-directory "~/Documents/deft/"
-      deft-text-mode 'org-mode)
-   (global-set-key (kbd "<f8>") 'deft))
+;; (require 'deft)
+;; (when (require 'deft nil 'noerror) 
+;;    (setq
+;;       deft-extension "org"
+;;       deft-directory "~/Documents/deft/"
+;;       deft-text-mode 'org-mode)
+;;    (global-set-key (kbd "<f8>") 'deft))
 
 ;;
 ;; http://stackoverflow.com/questions/885793/emacs-error-when-calling-server-start/1566618#1566618
@@ -271,7 +282,7 @@
 ;;
 ;; Password generator
 ;;
-(load-file "~/.emacs.d/lisp/password-generator.el")
+;(load-file "~/.emacs.d/lisp/password-generator.el")
 
 
 ;;
@@ -297,16 +308,15 @@
 ;;
 (setq frame-title-format "%f")
 
-(setq lag-variable-width-font-name "Arial")
+(setq lag-variable-width-font-name "Consolas")
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- `(font-lock-builtin-face ((t (:foreground "#8E69C9" :family ,lag-variable-width-font-name))))
- `(font-lock-comment-face ((t (:foreground "dim gray" :height 1.1 :width normal :family ,lag-variable-width-font-name))))
- `(font-lock-keyword-face ((t (:foreground "#8E6DA6" :slant italic :weight ultra-bold :family ,lag-variable-width-font-name)))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "slate gray"))))
+ '(font-lock-comment-face ((t (:foreground "slate gray")))))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -322,15 +332,16 @@
  '(custom-enabled-themes (quote (lavender)))
  '(custom-safe-themes
    (quote
-	("47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default)))
+	("9398969cf7214748a41a02e35c660b5325cfa0832ea2a04bd1eb2b600665dd74" "47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default)))
  '(exec-path
    (quote
-	("C:/Java/jdk1.8.0_102/bin" "C:/work/Git/bin" "C:/work/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
+	("C:/Java/jdk1.8.0_102/bin" "C:/local/Git/bin" "C:/local/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
+ '(ffap-machine-p-known (quote reject))
  '(js-indent-level 2)
  '(neo-window-width 50)
  '(package-archives (quote (("melpa" . "http://stable.melpa.org/packages/"))))
  '(package-selected-packages
    (quote
-	(scala-mode monroe treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit)))
+	(flymake-haskell-multi haskell-mode ensime groovy-mode bind-key scala-mode monroe treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit)))
  '(standard-indent 2)
  '(tab-width 4))

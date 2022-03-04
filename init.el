@@ -1,4 +1,4 @@
-;; -*- coding: utf-8-dos -*- 
+;; -*- coding: utf-8-dos -*-
 
 ;;
 ;; Custom code
@@ -13,7 +13,7 @@
 (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
                     (not (gnutls-available-p))))
        (proto (if no-ssl "http" "https"))
-       (stable nil))
+       (stable t))
   ;; Comment/uncomment these two lines to enable/disable MELPA and MELPA Stable as desired
   (add-to-list 'package-archives (cons "melpa"
                                        (concat proto "://"
@@ -37,39 +37,39 @@
 ;;  (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
                                         ;  )
 
-(add-to-list 'load-path "~/.emacs.d/lisp/monroe")
+;; list of packages
+;; cider
+;; lavender-theme
+;; paredit
 
-(set-default-font "Consolas 12")
+
+(set-frame-font "Consolas 12")
 ; (set-default-font "Inconsolata 14")
-
-(package-initialize)
 
 (defun lag-prev-window ()
   (interactive)
   (other-window -1))
 
 ;;
-;; Kill line ending.
-;;
-(defun my-kill-line ()
-  (interactive)
-  (kill-line t))
-
-;;
 ;; http://emacs.stackexchange.com/a/360/11422
 ;; Bind keys but prevent major and minor modes to override settings
 ;;
-(bind-keys*
- ("C-;" . delete-horizontal-space)
- ("C-." . join-line)
-; ("C-o" . other-window)
- ("C-S-o" . other-window)
- ("C-c 3" . comment-region)
- ("C-c 4" . uncomment-region)
- ("C-S-k" . my-kill-line)
- ("C-x t" . delete-trailing-whitespace)
- ("C-c C-l" . browse-url-at-point)
- ("C-c C-d" . insert-date))
+;; (bind-keys*
+;;  ("C-;" . delete-horizontal-space)
+;;  ("C-." . join-line)
+;; ; ("C-o" . other-window)
+;;  ("C-S-o" . other-window)
+;;  ("C-c 3" . comment-region)
+;;  ("C-c 4" . uncomment-region)
+;;  ("C-S-k" . my-kill-line)
+;;  ("C-x t" . delete-trailing-whitespace)
+;;  ("C-c C-l" . browse-url-at-point)
+;;  ("C-c C-d" . insert-date))
+(define-key (current-global-map) (kbd "C-;") 'delete-horizontal-space)
+(define-key (current-global-map) (kbd "C-.") 'join-line)
+(define-key (current-global-map) (kbd "C-c 3") 'comment-region)
+(define-key (current-global-map) (kbd "C-c 4") 'uncomment-region)
+(define-key (current-global-map) (kbd "C-c t") 'delete-trailing-whitespace)
 
 ;;
 ;; https://masteringemacs.org/article/introduction-to-ido-mode
@@ -88,12 +88,12 @@
 ;;
 (setq indent-tabs-mode t)
 (setq tab-width 4)
-(setq indent-line-function ')
+(setq indent-line-function nil)
 ;; Python Hook
-(add-hook 'javascript-mode-hook
+(add-hook 'python-mode-hook
           (function (lambda ()
                       (setq indent-tabs-mode nil
-                            tab-width 2))))
+                            tab-width 4))))
 
 ;;
 ;; 2019-01-18
@@ -206,7 +206,7 @@
 ;; http://emacs-fu.blogspot.com/2011/09/quick-note-taking-with-deft-and-org.html
 ;;
 ;; (require 'deft)
-;; (when (require 'deft nil 'noerror) 
+;; (when (require 'deft nil 'noerror)
 ;;    (setq
 ;;       deft-extension "org"
 ;;       deft-directory "~/Documents/deft/"
@@ -227,7 +227,7 @@
 ;; Change ENV var PATH to be the same as contents of exec-path.
 ;; I use it to make sure java.exe is on the PATH, to run cider.
 ;;
-(setenv "PATH" (mapconcat 'identity exec-path ";"))
+; (setenv "PATH" (mapconcat 'identity exec-path ";"))
 
 ;;
 ;; Enable paredit automatically for a few modes.
@@ -294,7 +294,8 @@
 ;;
 ;; https://www.emacswiki.org/emacs/WoMan
 ;;
-(setq woman-manpath '("c:/cygwin64/usr/share/man/"))
+;; (setq woman-manpath '("c:/cygwin64/usr/share/man/"
+;; 					  "c:/local/scala-2.12.8/man/"))
 
 ;;
 ;; https://www.emacswiki.org/emacs/AlarmBell
@@ -329,19 +330,36 @@
    ["#212526" "#ff4b4b" "#b4fa70" "#fce94f" "#729fcf" "#e090d7" "#8cc4ff" "#eeeeec"])
  '(cider-cljs-lein-repl
    "(do (require 'weasel.repl.websocket) (cemerick.piggieback/cljs-repl (weasel.repl.websocket/repl-env :ip \"127.0.0.1\" :port 58864)))")
- '(custom-enabled-themes (quote (lavender)))
+ '(column-number-mode t)
+ '(custom-enabled-themes '(lavender))
  '(custom-safe-themes
-   (quote
-	("9398969cf7214748a41a02e35c660b5325cfa0832ea2a04bd1eb2b600665dd74" "47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default)))
- '(exec-path
-   (quote
-	("C:/Java/jdk1.8.0_102/bin" "C:/local/Git/bin" "C:/local/Git/usr/bin" "c:/Windows/system32" "C:/Windows" "C:/Windows/System32/Wbem" "C:/Windows/System32/WindowsPowerShell/v1.0/" "C:/Windows/CCM" "c:/work/emacs-25.1/libexec/emacs/25.1/x86_64-w64-mingw32" "C:/path")))
- '(ffap-machine-p-known (quote reject))
+   '("9398969cf7214748a41a02e35c660b5325cfa0832ea2a04bd1eb2b600665dd74" "47ac4658d9e085ace37e7d967ea1c7d5f3dfeb2f720e5dec420034118ba84e17" default))
+ '(ffap-machine-p-known 'reject)
  '(js-indent-level 2)
+ '(kill-whole-line t)
  '(neo-window-width 50)
- '(package-archives (quote (("melpa" . "http://stable.melpa.org/packages/"))))
+ '(package-archives '(("melpa" . "http://stable.melpa.org/packages/")))
  '(package-selected-packages
-   (quote
-	(flymake-haskell-multi haskell-mode ensime groovy-mode bind-key scala-mode monroe treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit)))
+   '(go-mode rust-mode flymake-haskell-multi haskell-mode ensime groovy-mode bind-key scala-mode monroe treemacs cider markdown-preview-mode writeroom-mode fsharp-mode markdown-mode markdown-mode+ lua-mode js2-mode use-package neotree projectile clojure-mode paredit lavender-theme deft ido-ubiquitous magit))
+ '(size-indication-mode t)
  '(standard-indent 2)
  '(tab-width 4))
+
+
+(setq my-emacs
+	  (let ((disp (getenv "DISPLAY")))
+		(cond
+		 ((string= disp "w32")
+		  'w32)
+
+		 ;; emacs no-X
+		 ((null disp)
+		  'nox)
+		 
+		 ;; other?
+		 (t nil)
+		 )))
+(when (eq my-emacs 'w32)
+  (custom-set-variables
+   '(custom-enabled-themes '(lavender))))
+ 
